@@ -8,11 +8,14 @@ jobs:
         run: |
           {
             echo "### Internet check"
-            echo '```'
             curl -sI --max-time 10 https://dl.google.com | head -3 || echo "dl.google.com FAIL"
             curl -sI --max-time 10 https://repo.maven.apache.org | head -3 || echo "maven FAIL"
             curl -sI --max-time 10 https://services.gradle.org | head -3 || echo "gradle FAIL"
-            java -version 2>&1
-            which java
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+            java -version 2>&1 || echo "no java"
+            which java || echo "no java path"
+          } > result.txt
+          cat result.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: result
+          path: result.txt
