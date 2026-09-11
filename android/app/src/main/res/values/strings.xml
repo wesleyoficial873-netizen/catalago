@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Voz Clone</string>
+
+    <string name="title_text">Texto para falar</string>
+    <string name="hint_text">Digite aqui o texto que você quer que a voz fale…</string>
+    <string name="title_voice">Voz de referência</string>
+    <string name="no_voice_selected">Nenhuma voz anexada</string>
+    <string name="btn_attach_file">Anexar áudio</string>
+    <string name="btn_record">Gravar voz</string>
+    <string name="btn_stop_record">Parar gravação</string>
+    <string name="btn_generate">Gerar fala com essa voz</string>
+    <string name="btn_play">Ouvir resultado</string>
+    <string name="btn_save">Salvar áudio</string>
+    <string name="btn_share">Compartilhar</string>
+    <string name="title_server">Servidor de clonagem de voz</string>
+    <string name="hint_server">Endereço do servidor (ex: https://xxxx.ngrok-free.app)</string>
+    <string name="btn_test_connection">Testar conexão</string>
+    <string name="status_idle">Pronto</string>
+    <string name="status_generating">Gerando áudio, aguarde…</string>
+    <string name="status_error">Erro: %1$s</string>
+    <string name="status_success">Áudio gerado com sucesso!</string>
+    <string name="status_testing">Testando conexão…</string>
+    <string name="status_connected">Servidor conectado ✔</string>
+    <string name="status_disconnected">Não foi possível conectar ao servidor</string>
+    <string name="menu_settings">Configurações</string>
+    <string name="settings_title">Configurações do servidor</string>
+    <string name="settings_help">O app envia o texto e a voz de referência para um servidor que faz a clonagem
+        de voz (Coqui XTTS, gratuito e de código aberto). Você precisa rodar esse servidor
+        (veja o guia incluso no projeto) e colar o endereço aqui.</string>
+    <string name="btn_save_settings">Salvar</string>
+    <string name="perm_denied">Permissão negada. Não é possível gravar áudio.</string>
+    <string name="language_label">Idioma do texto</string>
+</resources>
