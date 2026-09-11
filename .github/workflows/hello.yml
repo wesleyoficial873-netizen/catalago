@@ -6,6 +6,13 @@ jobs:
     steps:
       - name: check internet
         run: |
-          curl -sI https://dl.google.com | head -3
-          curl -sI https://repo.maven.apache.org | head -3
-          java -version
+          {
+            echo "### Internet check"
+            echo '```'
+            curl -sI --max-time 10 https://dl.google.com | head -3 || echo "dl.google.com FAIL"
+            curl -sI --max-time 10 https://repo.maven.apache.org | head -3 || echo "maven FAIL"
+            curl -sI --max-time 10 https://services.gradle.org | head -3 || echo "gradle FAIL"
+            java -version 2>&1
+            which java
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
