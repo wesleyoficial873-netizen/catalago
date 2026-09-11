@@ -8,20 +8,28 @@ jobs:
     steps:
       - name: check environment
         run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-          ls "$ANDROID_HOME" || true
-          ls "$ANDROID_HOME/platforms" || true
-          ls "$ANDROID_HOME/build-tools" || true
-          java -version
-          which java
-          echo $JAVA_HOME
-          ls /usr/lib/jvm || true
+          {
+            echo "ANDROID_HOME=$ANDROID_HOME"
+            echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+            ls "$ANDROID_HOME" 2>&1 || true
+            echo "--platforms--"
+            ls "$ANDROID_HOME/platforms" 2>&1 || true
+            echo "--build-tools--"
+            ls "$ANDROID_HOME/build-tools" 2>&1 || true
+            echo "--java--"
+            java -version 2>&1
+            which java
+            echo "JAVA_HOME=$JAVA_HOME"
+            ls /usr/lib/jvm 2>&1 || true
+            echo "--gradle--"
+            gradle -v 2>&1 || echo "no system gradle"
+          } > /tmp/envcheck.txt 2>&1
+          cat /tmp/envcheck.txt
       - name: test release upload
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ci-test-${{ github.run_id }}
-          files: .github/workflows/hello.yml
-          body: "test release"
+          tag_name: ci-env-${{ github.run_id }}
+          files: /tmp/envcheck.txt
+          body: "env check"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
