@@ -1,21 +1,27 @@
 name: hello-check
 on: [workflow_dispatch, push]
+permissions:
+  contents: write
 jobs:
   hello:
     runs-on: ubuntu-latest
     steps:
-      - name: check internet
+      - name: check environment
         run: |
-          {
-            echo "### Internet check"
-            curl -sI --max-time 10 https://dl.google.com | head -3 || echo "dl.google.com FAIL"
-            curl -sI --max-time 10 https://repo.maven.apache.org | head -3 || echo "maven FAIL"
-            curl -sI --max-time 10 https://services.gradle.org | head -3 || echo "gradle FAIL"
-            java -version 2>&1 || echo "no java"
-            which java || echo "no java path"
-          } > result.txt
-          cat result.txt
-      - uses: actions/upload-artifact@v4
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          ls "$ANDROID_HOME" || true
+          ls "$ANDROID_HOME/platforms" || true
+          ls "$ANDROID_HOME/build-tools" || true
+          java -version
+          which java
+          echo $JAVA_HOME
+          ls /usr/lib/jvm || true
+      - name: test release upload
+        uses: softprops/action-gh-release@v2
         with:
-          name: result
-          path: result.txt
+          tag_name: ci-test-${{ github.run_id }}
+          files: .github/workflows/hello.yml
+          body: "test release"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
