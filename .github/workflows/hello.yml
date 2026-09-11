@@ -1,0 +1,11 @@
+name: hello-check
+on: [workflow_dispatch, push]
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check internet
+        run: |
+          curl -sI https://dl.google.com | head -3
+          curl -sI https://repo.maven.apache.org | head -3
+          java -version
