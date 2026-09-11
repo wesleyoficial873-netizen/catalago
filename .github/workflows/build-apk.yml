@@ -36,11 +36,19 @@ jobs:
       - name: Validate APK (aapt badging + sizes)
         run: |
           APK=app/build/outputs/apk/debug/app-debug.apk
-          echo "Tamanho do APK:"
-          ls -la "$APK"
-          AAPT=$(find "$ANDROID_HOME/build-tools" -name aapt -type f | sort -V | tail -1)
-          echo "Usando aapt: $AAPT"
-          "$AAPT" dump badging "$APK" | head -20
+          {
+            echo "Tamanho do APK:"
+            ls -la "$APK"
+            AAPT=$(find "$ANDROID_HOME/build-tools" -name aapt -type f | sort -V | tail -1)
+            echo "Usando aapt: $AAPT"
+            "$AAPT" dump badging "$APK"
+          } | tee /tmp/apk-validate.txt
+
+      - name: Upload validation log
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk-validation-log
+          path: /tmp/apk-validate.txt
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
@@ -60,6 +68,8 @@ jobs:
 
             Baixe o arquivo `app-debug.apk` abaixo e instale no seu Android
             (pode ser preciso permitir "instalar de fontes desconhecidas").
-          files: android/app/build/outputs/apk/debug/app-debug.apk
+          files: |
+            android/app/build/outputs/apk/debug/app-debug.apk
+            /tmp/apk-validate.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
