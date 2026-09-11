@@ -33,6 +33,15 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug --no-daemon --stacktrace
 
+      - name: Validate APK (aapt badging + sizes)
+        run: |
+          APK=app/build/outputs/apk/debug/app-debug.apk
+          echo "Tamanho do APK:"
+          ls -la "$APK"
+          AAPT=$(find "$ANDROID_HOME/build-tools" -name aapt -type f | sort -V | tail -1)
+          echo "Usando aapt: $AAPT"
+          "$AAPT" dump badging "$APK" | head -20
+
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
