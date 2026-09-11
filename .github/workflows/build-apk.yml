@@ -45,16 +45,6 @@ jobs:
           } | tee /tmp/apk-validate.txt
 
 
-      - name: Push validation log to branch (debug)
-        run: |
-          git config user.name "ci-bot"
-          git config user.email "ci-bot@example.com"
-          git checkout -B ci-apk-log
-          cp /tmp/apk-validate.txt ../apk-validate.txt
-          git add -f ../apk-validate.txt
-          git commit -m "debug: apk validate log" -q
-          git push -f origin ci-apk-log
-
       - name: Upload validation log
         uses: actions/upload-artifact@v4
         with:
